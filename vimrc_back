@@ -1,0 +1,55 @@
+execute pathogen#infect()
+call pathogen#helptags()
+set ic
+autocmd VimEnter * NERDTree
+colorscheme elflord
+syntax enable           " enable syntax processing
+set tabstop=4       " number of visual spaces per TAB
+set softtabstop=4   " number of spaces in tab when editing
+set expandtab       " tabs are spaces
+set number              " show line numbers
+set showcmd             " show command in bottom bar
+set cursorline          " highlight current line
+filetype indent on      " load filetype-specific indent files
+set wildmenu            " visual autocomplete for command menu
+set lazyredraw          " redraw only when we need to.
+set showmatch           " highlight matching [{()}]
+set incsearch           " search as characters are entered
+set hlsearch            " highlight matches
+set foldlevelstart=10   " open most folds by default
+set foldnestmax=10      " 10 nested fold max
+set foldmethod=indent   " fold based on indent level
+
+
+fun! MkdirIfNeeded(dir, flags, permissions)
+    if !isdirectory(a:dir)
+        call mkdir(a:dir, a:flags, a:permissions)
+    endif
+endfun
+
+" Set (& create if needed) a temp directory to keep backup & swap files
+if has('win32')
+    let whoami = substitute(system("whoami /LOGONID"), '\n', '', '')
+    let tmpdir = 'C:/tmp/vim_' . whoami
+else
+    let whoami = substitute(system("whoami"), '\n', '', '')
+    let tmpdir = '/var/tmp/vim_' . whoami
+endif
+call MkdirIfNeeded(tmpdir, 'p', 0700)
+
+let &backupdir = tmpdir
+let &dir = tmpdir
+let &undodir = tmpdir
+
+
+let g:javascript_plugin_jsdoc = 1
+let g:javascript_plugin_ngdoc = 1
+let g:javascript_plugin_flow = 1
+
+
+augroup javascript_folding
+    au!
+    au FileType javascript setlocal foldmethod=syntax
+augroup END
+
+map <F7> mzgg=G`z
