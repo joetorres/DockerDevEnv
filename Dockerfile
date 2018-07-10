@@ -29,8 +29,7 @@ RUN apt-get update && apt-get install -y \
       wget \
       curl \
       g++ \
-      htop
-
+      htop 
 
 RUN npm -g i n
 RUN n lts
@@ -44,15 +43,19 @@ RUN apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 581
       apt-get install -y apt-transport-https &&\
       apt-get update &&\
       apt-get install -y docker-engine
+
 RUN  curl -o /usr/local/bin/docker-compose -L "https://github.com/docker/compose/releases/download/1.13.0/docker-compose-$(uname -s)-$(uname -m)" &&\
      chmod +x /usr/local/bin/docker-compose
-
 
 RUN pip install --upgrade pip 
 RUN npm -g i npm
 
-
-
 #addons vim
 RUN mkdir -p ~/.vim/autoload ~/.vim/bundle && curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
 RUN git clone https://github.com/scrooloose/nerdtree.git /root/.vim/bundle/nerdtree
+
+RUN git clone --recurse-submodules https://github.com/Valloric/YouCompleteMe.git /root/.vim/bundle/YouCompleteMe 
+
+RUN apt-get install cmake -y
+
+RUN /root/.vim/bundle/YouCompleteMe/install.py --clang-completer --js-completer
